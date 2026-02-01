@@ -212,7 +212,7 @@ noBtn.addEventListener("mouseover", moveNoButton);
 // YES BUTTON
 yesBtn.addEventListener("click", ()=>{
     yesClicks++;
-    yesBtn.style.transform = `scale(${1 + yesClicks*2})`;
+    yesBtn.style.transform = `scale(${1 + yesClicks*0.05})`;
     if(yesClicks <= phrases.length) message.textContent = phrases[yesClicks-1];
     if(yesClicks >= phrases.length) {
         for(let i=0;i<30;i++){
