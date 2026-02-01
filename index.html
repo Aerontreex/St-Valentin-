@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>💌 Une question très importante…</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    text-align: center;
+}
+
+.envelope {
+    width: 80vw;
+    max-width: 320px;
+    height: 200px;
+    background: #fff;
+    border-radius: 12px;
+    position: relative;
+    cursor: pointer;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.25);
+    transition: transform 0.6s;
+}
+
+.envelope::before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: #ff4d6d;
+    clip-path: polygon(0 0, 100% 0, 50% 50%);
+}
+
+.envelope.open {
+    transform: translateY(-120px);
+}
+
+.card {
+    display: none;
+    background: white;
+    padding: 25px;
+    border-radius: 20px;
+    max-width: 90vw;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.25);
+}
+
+.card.show {
+    display: block;
+}
+
+h1 {
+    color: #ff4d6d;
+    font-size: 1.6rem;
+}
+
+p {
+    font-size: 1rem;
+}
+
+.buttons {
+    margin-top: 25px;
+    position: relative;
+    height: 140px;
+}
+
+button {
+    padding: 16px 28px;
+    font-size: 1.1rem;
+    border: none;
+    border-radius: 40px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+#yes {
+    background: #ff4d6d;
+    color: white;
+}
+
+#no {
+    background: #ddd;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.message {
+    margin-top: 15px;
+    color: #ff4d6d;
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+.heart {
+    position: absolute;
+    font-size: 20px;
+    animation: float 6s linear infinite;
+}
+
+@keyframes float {
+    0% { transform: translateY(0); opacity: 1; }
+    100% { transform: translateY(-100vh); opacity: 0; }
+}
+</style>
+</head>
+
+<body>
+
+<div class="envelope" id="envelope"></div>
+
+<div class="card" id="card">
+    <h1>💖 Veux-tu être ma Valentine ? 💖</h1>
+    <p id="text">Promis, je ferai de mon mieux 😇</p>
+
+    <div class="buttons">
+        <button id="yes">Oui ❤️</button>
+        <button id="no">Non 💔</button>
+    </div>
+
+    <div class="message" id="message"></div>
+</div>
+
+<script>
+const envelope = document.getElementById("envelope");
+const card = document.getElementById("card");
+const noBtn = document.getElementById("no");
+const yesBtn = document.getElementById("yes");
+const message = document.getElementById("message");
+const text = document.getElementById("text");
+
+let yesClicks = 0;
+
+const phrases = [
+    "Hmm… t’es sûre ? 😏",
+    "On serait mignons ensemble non ? 💕",
+    "Ce bouton Oui commence à te plaire 😌",
+    "Je le sens bien là 😍",
+    "Ok… j’avoue, j’y crois fort 💘"
+];
+
+// Ouvrir l’enveloppe
+envelope.addEventListener("click", () => {
+    envelope.classList.add("open");
+    setTimeout(() => {
+        envelope.style.display = "none";
+        card.classList.add("show");
+    }, 600);
+});
+
+// Bouton NON (mobile + desktop)
+function moveNoButton() {
+    const x = Math.random() * 60;
+    const y = Math.random() * 80;
+    noBtn.style.left = x + "%";
+    noBtn.style.top = y + "px";
+}
+
+noBtn.addEventListener("touchstart", moveNoButton);
+noBtn.addEventListener("mouseover", moveNoButton);
+
+// Bouton OUI
+yesBtn.addEventListener("click", () => {
+    yesClicks++;
+    yesBtn.style.transform = `scale(${1 + yesClicks * 0.15})`;
+
+    if (yesClicks <= phrases.length) {
+        message.textContent = phrases[yesClicks - 1];
+    }
+
+    if (yesClicks >= phrases.length) {
+        text.textContent = "Je savais que ton cœur dirait oui 💖";
+        message.innerHTML = "🌹 Merci… tu viens de rendre quelqu’un très heureux 🌹";
+        noBtn.style.display = "none";
+    }
+});
+
+// Cœurs animés
+setInterval(() => {
+    const heart = document.createElement("div");
+    heart.className = "heart";
+    heart.innerHTML = "❤️";
+    heart.style.left = Math.random() * 100 + "vw";
+    heart.style.top = "100vh";
+    heart.style.fontSize = Math.random() * 20 + 10 + "px";
+    document.body.appendChild(heart);
+    setTimeout(() => heart.remove(), 6000);
+}, 400);
+</script>
+
+</body>
+</html>
