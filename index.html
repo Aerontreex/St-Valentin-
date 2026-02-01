@@ -3,196 +3,205 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>💌 Une question très importante…</title>
-
+<title>💌 Pour Lola</title>
 <style>
-body {
-    margin: 0;
-    font-family: 'Segoe UI', sans-serif;
+/* ===================== GLOBAL ===================== */
+body, html {
+    margin:0; padding:0;
+    width:100%; height:100%;
+    display:flex; justify-content:center; align-items:center;
+    font-family:'Segoe UI', sans-serif;
     background: linear-gradient(135deg, #ff9a9e, #fad0c4);
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
-    text-align: center;
+    overflow:hidden;
 }
+.container {position:relative; width:90vw; max-width:360px;}
 
+/* ===================== HEARTS ===================== */
+.heart {position:absolute; font-size:20px; animation:float 6s linear infinite;}
+@keyframes float {0%{transform:translateY(0);opacity:1;} 100%{transform:translateY(-100vh);opacity:0;}}
+
+/* ===================== ENVELOPPE ===================== */
 .envelope {
-    width: 80vw;
-    max-width: 320px;
-    height: 200px;
-    background: #fff;
-    border-radius: 12px;
-    position: relative;
-    cursor: pointer;
-    box-shadow: 0 15px 40px rgba(0,0,0,0.25);
-    transition: transform 0.6s;
+    width:100%; aspect-ratio:1.2; background:#ffdee9;
+    border-radius:15px; box-shadow:0 10px 25px rgba(0,0,0,0.2);
+    cursor:pointer; overflow:hidden;
+    display:flex; justify-content:center; align-items:center;
+    position:relative; transition: transform 0.5s;
 }
-
 .envelope::before {
-    content: "";
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background: #ff4d6d;
-    clip-path: polygon(0 0, 100% 0, 50% 50%);
+    content:""; position:absolute; width:100%; height:50%; top:0; left:0;
+    background:#ff4d6d; clip-path: polygon(0 0,100% 0,50% 100%);
+    transition: transform 0.7s;
 }
+.envelope.open::before {transform: rotateX(180deg) translateY(-50%);}
+.envelope span {font-size:2.5rem; color:white;}
 
-.envelope.open {
-    transform: translateY(-120px);
-}
-
+/* ===================== CARD ===================== */
 .card {
-    display: none;
-    background: white;
-    padding: 25px;
-    border-radius: 20px;
-    max-width: 90vw;
-    box-shadow: 0 20px 50px rgba(0,0,0,0.25);
+    position:absolute; top:0; width:100%; padding:20px;
+    background:#fff; border-radius:20px;
+    box-shadow:0 15px 35px rgba(0,0,0,0.25);
+    text-align:center;
+    opacity:0; transform:translateY(50px);
+    transition: all 0.6s ease-out;
 }
-
-.card.show {
-    display: block;
-}
-
-h1 {
-    color: #ff4d6d;
-    font-size: 1.6rem;
-}
-
-p {
-    font-size: 1rem;
-}
-
-.buttons {
-    margin-top: 25px;
-    position: relative;
-    height: 140px;
-}
-
+.card.show {opacity:1; transform:translateY(0);}
+.card h1 {color:#ff4d6d; font-size:1.5rem; margin-bottom:15px;}
+.card p {font-size:1rem; margin-bottom:20px;}
+.buttons {position:relative; height:140px;}
 button {
-    padding: 16px 28px;
-    font-size: 1.1rem;
-    border: none;
-    border-radius: 40px;
-    cursor: pointer;
-    transition: 0.3s;
+    padding:16px 28px; font-size:1.1rem; border:none; border-radius:40px; cursor:pointer; transition:0.3s;
 }
+#yes {background:#ff4d6d; color:white;}
+#no {background:#ddd; position:absolute; left:50%; transform:translateX(-50%);}
+.message {margin-top:15px; color:#ff4d6d; font-weight:bold; font-size:1rem;}
 
-#yes {
-    background: #ff4d6d;
-    color: white;
+/* ===================== FINAL SLIDE ===================== */
+.finalSlide {
+    position:absolute; top:0; width:100%; padding:30px;
+    background:#fff0f5; border-radius:20px;
+    box-shadow:0 15px 35px rgba(0,0,0,0.25);
+    text-align:center; opacity:0; transform:scale(0.9);
+    transition: all 0.7s ease-out;
 }
+.finalSlide.show {opacity:1; transform:scale(1);}
+.finalSlide h1 {color:#ff4d6d; font-size:1.5rem; margin-bottom:15px;}
+.finalSlide p {font-size:1.1rem;}
 
-#no {
-    background: #ddd;
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
+/* ===================== CONFETTI ===================== */
+.confetti {
+    position:absolute; width:10px; height:10px;
+    background:red; opacity:0.8;
+    animation:fall 3s linear forwards;
+    border-radius:50%;
 }
+@keyframes fall {0%{transform:translateY(0);} 100%{transform:translateY(100vh) rotate(360deg); opacity:0;}}
 
-.message {
-    margin-top: 15px;
-    color: #ff4d6d;
-    font-weight: bold;
-    font-size: 1rem;
+/* ===================== ANIMATION DU MOT ===================== */
+.word {
+    position:absolute;
+    top:20%; left:50%;
+    transform:translate(-50%, -50%) scale(0);
+    background:#fff; padding:20px; border-radius:15px;
+    box-shadow:0 15px 35px rgba(0,0,0,0.25);
+    transition: transform 0.6s ease-out, opacity 0.6s ease-out;
+    text-align:center;
 }
-
-.heart {
-    position: absolute;
-    font-size: 20px;
-    animation: float 6s linear infinite;
-}
-
-@keyframes float {
-    0% { transform: translateY(0); opacity: 1; }
-    100% { transform: translateY(-100vh); opacity: 0; }
-}
+.word.show {transform:translate(-50%, -50%) scale(1); opacity:1;}
 </style>
 </head>
-
 <body>
 
-<div class="envelope" id="envelope"></div>
+<div class="container">
 
-<div class="card" id="card">
-    <h1>💖 Veux-tu être ma Valentine ? 💖</h1>
-    <p id="text">Promis, je ferai de mon mieux 😇</p>
+    <!-- Enveloppe -->
+    <div class="envelope" id="envelope"><span>💌</span></div>
 
-    <div class="buttons">
-        <button id="yes">Oui ❤️</button>
-        <button id="no">Non 💔</button>
+    <!-- Mot qui sort -->
+    <div class="word" id="word">
+        <h1>💖 Lola, veux-tu être ma Valentine ? 💖</h1>
+        <p>Promis, je ferai de mon mieux 😇</p>
+        <div class="buttons">
+            <button id="yes">Oui ❤️</button>
+            <button id="no">Non 💔</button>
+        </div>
+        <div class="message" id="message"></div>
     </div>
 
-    <div class="message" id="message"></div>
+    <!-- Slide finale -->
+    <div class="finalSlide" id="finalSlide">
+        <h1>🌹 Merci Lola ! 🌹</h1>
+        <p>
+            Ah super 😏 ! Tu as rendu quelqu’un vraiment heureux en répondant oui.<br>
+            Tu comptes énormément pour moi, merci d’avoir cliqué sur le bon bouton ❤️.<br>
+            Ça me fait sourire et ça rend ma journée mille fois meilleure…<br>
+            Vivement le 14 pour qu’on se retrouve et passer un super moment ensemble 😘.<br>
+            Je t’aime, gros bisous 💕
+        </p>
+    </div>
+
 </div>
 
 <script>
+// ==== VARIABLES ====
 const envelope = document.getElementById("envelope");
-const card = document.getElementById("card");
+const word = document.getElementById("word");
 const noBtn = document.getElementById("no");
 const yesBtn = document.getElementById("yes");
 const message = document.getElementById("message");
-const text = document.getElementById("text");
+const finalSlide = document.getElementById("finalSlide");
 
 let yesClicks = 0;
-
 const phrases = [
     "Hmm… t’es sûre ? 😏",
     "On serait mignons ensemble non ? 💕",
     "Ce bouton Oui commence à te plaire 😌",
     "Je le sens bien là 😍",
-    "Ok… j’avoue, j’y crois fort 💘"
+    "Bon… tu dois vraiment cliquer encore 💘",
+    "Allez, juste un petit dernier 😇",
+    "Je t’ai dit que j’y croyais 💖",
+    "Encore un petit effort 😏",
+    "C’est presque fini, clique 😍",
+    "Ouiiiiiiii, tu es géniale ❤️"
 ];
 
-// Ouvrir l’enveloppe
-envelope.addEventListener("click", () => {
-    envelope.classList.add("open");
-    setTimeout(() => {
-        envelope.style.display = "none";
-        card.classList.add("show");
-    }, 600);
-});
-
-// Bouton NON (mobile + desktop)
-function moveNoButton() {
-    const x = Math.random() * 60;
-    const y = Math.random() * 80;
-    noBtn.style.left = x + "%";
-    noBtn.style.top = y + "px";
-}
-
-noBtn.addEventListener("touchstart", moveNoButton);
-noBtn.addEventListener("mouseover", moveNoButton);
-
-// Bouton OUI
-yesBtn.addEventListener("click", () => {
-    yesClicks++;
-    yesBtn.style.transform = `scale(${1 + yesClicks * 0.15})`;
-
-    if (yesClicks <= phrases.length) {
-        message.textContent = phrases[yesClicks - 1];
-    }
-
-    if (yesClicks >= phrases.length) {
-        text.textContent = "Je savais que ton cœur dirait oui 💖";
-        message.innerHTML = "🌹 Merci… tu viens de rendre quelqu’un très heureux 🌹";
-        noBtn.style.display = "none";
-    }
-});
-
-// Cœurs animés
-setInterval(() => {
+// ==== ANIMATION DES COEURS ====
+setInterval(()=>{
     const heart = document.createElement("div");
-    heart.className = "heart";
-    heart.innerHTML = "❤️";
-    heart.style.left = Math.random() * 100 + "vw";
-    heart.style.top = "100vh";
-    heart.style.fontSize = Math.random() * 20 + 10 + "px";
+    heart.className="heart";
+    heart.innerHTML="❤️";
+    heart.style.left=Math.random()*100+"vw";
+    heart.style.top="100vh";
+    heart.style.fontSize=Math.random()*20+10+"px";
     document.body.appendChild(heart);
-    setTimeout(() => heart.remove(), 6000);
-}, 400);
+    setTimeout(()=>heart.remove(),6000);
+},400);
+
+// ==== OUVRIR L'ENVELOPPE ====
+envelope.addEventListener("click",()=>{
+    envelope.classList.add("open");
+    setTimeout(()=>{
+        envelope.style.display="none";
+        word.classList.add("show");
+    },700);
+});
+
+// ==== BOUTON NON ====
+function moveNoButton(){
+    const x=Math.random()*60;
+    const y=Math.random()*80;
+    noBtn.style.left=x+"%";
+    noBtn.style.top=y+"px";
+}
+noBtn.addEventListener("touchstart",moveNoButton);
+noBtn.addEventListener("mouseover",moveNoButton);
+
+// ==== BOUTON OUI ====
+yesBtn.addEventListener("click",()=>{
+    yesClicks++;
+    yesBtn.style.transform=`scale(${1 + yesClicks * 0.15})`;
+    if(yesClicks <= phrases.length){
+        message.textContent=phrases[yesClicks-1];
+    }
+    if(yesClicks >= phrases.length){
+        // Explosion finale + confettis
+        yesBtn.style.transition="all 0.5s ease-out";
+        yesBtn.style.transform="scale(5)";
+        yesBtn.style.opacity=0;
+        for(let i=0;i<50;i++){
+            const conf = document.createElement("div");
+            conf.className="confetti";
+            conf.style.left=Math.random()*100+"vw";
+            conf.style.background=["#ff4d6d","#ff9a9e","#ffd1dc"][Math.floor(Math.random()*3)];
+            document.body.appendChild(conf);
+            setTimeout(()=>conf.remove(),3000);
+        }
+        setTimeout(()=>{
+            word.classList.remove("show");
+            finalSlide.classList.add("show");
+        },600);
+    }
+});
 </script>
 
 </body>
