@@ -35,6 +35,7 @@ body, html {
     display:flex;
     justify-content:center;
     align-items:center;
+    z-index:5;
 }
 .envelope-inner {
     width:100%;
@@ -55,14 +56,8 @@ body, html {
     font-size:2.5rem;
     box-shadow:0 10px 20px rgba(0,0,0,0.2);
 }
-.envelope-front {
-    background:#ff4d6d;
-    color:white;
-}
-.envelope-back {
-    background:#ffdee9;
-    transform:rotateX(180deg);
-}
+.envelope-front { background:#ff4d6d; color:white; }
+.envelope-back { background:#ffdee9; transform:rotateX(180deg); }
 
 /* ===================== MOT QUI SORT ===================== */
 .word {
@@ -82,11 +77,10 @@ body, html {
     display:flex;
     flex-direction:column;
     gap:10px;
+    pointer-events:auto; /* boutons cliquables */
+    z-index:10;
 }
-.word.show {
-    transform:translate(-50%, -50%) scale(1);
-    opacity:1;
-}
+.word.show { transform:translate(-50%, -50%) scale(1); opacity:1; }
 .word h1 {color:#ff4d6d; font-size:1.4rem; margin:0;}
 .word p {font-size:1rem; margin:0;}
 
@@ -105,6 +99,7 @@ button {
     border-radius:30px;
     cursor:pointer;
     transition: transform 0.3s, background 0.3s;
+    pointer-events:auto; /* Assure que le clic fonctionne */
 }
 #yes {background:#ff4d6d; color:white;}
 #no {background:#ddd; color:#333; position:relative;}
@@ -132,11 +127,9 @@ button {
     text-align:center;
     opacity:0;
     transition: all 0.7s ease-out;
+    z-index:15;
 }
-.finalSlide.show {
-    opacity:1;
-    transform:translate(-50%, -50%) scale(1);
-}
+.finalSlide.show { opacity:1; transform:translate(-50%, -50%) scale(1); }
 .finalSlide h1 {color:#ff4d6d; font-size:1.5rem; margin-bottom:10px;}
 .finalSlide p {font-size:1rem; line-height:1.4;}
 
@@ -239,11 +232,10 @@ setInterval(()=>{
 },400);
 
 // ===== OUVRIR L'ENVELOPPE =====
-// Clique n'importe où sur l'écran
 document.body.addEventListener("click", openEnvelopeOnce);
 let opened=false;
-function openEnvelopeOnce() {
-    if(opened) return;
+function openEnvelopeOnce(e) {
+    if(opened || e.target.tagName === "BUTTON") return;
     opened=true;
     envelope.classList.add("open");
     setTimeout(()=> word.classList.add("show"), 1000);
