@@ -173,7 +173,7 @@ let yesClicks = 0;
 const phrases = [
     "Hmm… t’es sûre ? 😏",
     "On serait mignons ensemble non ? 💕",
-    "Ce bouton Oui commence à te plaire 😌",
+    "Ce bouton commence à te plaire 😌",
     "Je le sens bien là 😍",
     "Bon… encore un petit clic 💘",
     "Allez, juste un dernier 😇",
@@ -212,7 +212,7 @@ noBtn.addEventListener("mouseover", moveNoButton);
 // YES BUTTON
 yesBtn.addEventListener("click", ()=>{
     yesClicks++;
-    yesBtn.style.transform = `scale(${1 + yesClicks*0.15})`;
+    yesBtn.style.transform = `scale(${1 + yesClicks*0.8})`;
     if(yesClicks <= phrases.length) message.textContent = phrases[yesClicks-1];
     if(yesClicks >= phrases.length) {
         for(let i=0;i<30;i++){
