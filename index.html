@@ -5,165 +5,130 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>💌 Pour Lola</title>
 <style>
-/* ===================== GLOBAL ===================== */
+/* BASE */
 body, html {
-    margin:0; padding:0;
-    width:100%; height:100%;
-    font-family:'Segoe UI', sans-serif;
+    margin: 0; padding: 0;
+    width: 100%; height: 100%;
+    font-family: 'Segoe UI', sans-serif;
     background: linear-gradient(135deg, #ff9a9e, #fad0c4);
-    overflow:hidden;
-    display:flex;
-    justify-content:center;
-    align-items:center;
+    overflow: hidden;
 }
 .container {
-    width:100%;
-    height:100%;
-    position:relative;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    flex-direction:column;
+    position: relative;
+    width: 100%;
+    height: 100%;
 }
 
-/* ===================== ENVELOPPE ===================== */
+/* ENVELOPPE */
 .envelope {
-    position:relative;
-    width:80%;
-    max-width:300px;
-    height:200px;
-    cursor:pointer;
-    perspective:1000px;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    z-index:5;
+    width: 80%;
+    max-width: 300px;
+    height: 200px;
+    margin: auto;
+    cursor: pointer;
+    perspective: 1000px;
 }
 .envelope-inner {
-    width:100%;
-    height:100%;
+    width:100%; height:100%;
     transform-style: preserve-3d;
-    transition: transform 1s ease-in-out;
+    transition: transform 1s ease;
 }
 .envelope.open .envelope-inner {
     transform: rotateX(180deg);
 }
 .envelope-front, .envelope-back {
-    position:absolute;
-    width:100%;
-    height:100%;
-    border-radius:15px;
-    backface-visibility:hidden;
+    position: absolute;
+    width:100%; height:100%;
+    border-radius: 15px;
+    backface-visibility: hidden;
     display:flex; justify-content:center; align-items:center;
     font-size:2.5rem;
-    box-shadow:0 10px 20px rgba(0,0,0,0.2);
 }
-.envelope-front { background:#ff4d6d; color:white; }
-.envelope-back { background:#ffdee9; transform:rotateX(180deg); }
+.envelope-front { background: #ff4d6d; color: white; }
+.envelope-back { background: #ffdee9; transform: rotateX(180deg); }
 
-/* ===================== MOT ===================== */
+/* MOT ET SON CONTENU */
 .word {
-    position:absolute;
-    top:50%;
-    left:50%;
-    transform:translate(-50%, -50%) scale(0);
-    width:90%;
-    max-width:350px;
-    background:#fff;
-    padding:20px;
-    border-radius:15px;
-    box-shadow:0 15px 35px rgba(0,0,0,0.25);
-    text-align:center;
-    transition: transform 0.6s ease-out, opacity 0.6s ease-out;
-    opacity:0;
-    display:flex;
-    flex-direction:column;
-    gap:10px;
-    pointer-events:auto;
-    z-index:10;
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    width: 90%; max-width: 350px;
+    background: white;
+    padding: 20px; border-radius: 15px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+    text-align: center;
+    opacity: 0;
+    pointer-events: none; /* parent ignore clics */
+    z-index: 10;
+    transition: transform 0.5s ease-out, opacity 0.5s ease-out;
 }
 .word.show {
-    transform:translate(-50%, -50%) scale(1);
-    opacity:1;
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+    pointer-events: auto; /* devient interactif */
 }
-.word h1 { color:#ff4d6d; font-size:1.4rem; margin:0; }
-.word p { font-size:1rem; margin:0; }
+.word h1 { color: #ff4d6d; font-size: 1.4rem; margin:0; }
+.word p { font-size: 1rem; margin:0; }
 
-/* ===================== BOUTONS ===================== */
+/* BOUTONS */
 .buttons {
-    display:flex;
-    justify-content:center;
-    gap:15px;
-    margin-top:10px;
-    flex-wrap:wrap;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 10px;
 }
 button {
-    padding:14px 28px;
-    font-size:1rem;
-    border:none;
-    border-radius:30px;
-    cursor:pointer;
+    padding: 14px 28px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
     transition: transform 0.3s, background 0.3s;
-    pointer-events:auto;
+    pointer-events: auto;
+    position: relative;
+    z-index: 11; /* au-dessus de tout */
 }
-#yes { background:#ff4d6d; color:white; }
-#no { background:#ddd; color:#333; position:relative; }
+#yes { background: #ff4d6d; color: white; }
+#no { background: #ddd; color:#333; }
 
-/* ===================== MESSAGE ===================== */
+/* MESSAGES */
 .message {
-    margin-top:10px;
-    color:#ff4d6d;
-    font-weight:bold;
-    font-size:1rem;
+    margin-top: 10px;
+    color: #ff4d6d;
+    font-weight: bold;
+    font-size: 1rem;
 }
 
-/* ===================== SLIDE FINALE ===================== */
+/* SLIDE FINALE */
 .finalSlide {
     position:absolute;
-    top:50%;
-    left:50%;
-    transform:translate(-50%, -50%) scale(0.9);
-    width:90%;
-    max-width:350px;
-    padding:25px;
-    background:#fff0f5;
-    border-radius:20px;
-    box-shadow:0 15px 35px rgba(0,0,0,0.25);
+    top: 50%; left:50%;
+    transform:translate(-50%, -50%);
+    width: 90%; max-width:350px;
+    background: #fff0f5;
+    padding: 25px;
+    border-radius: 20px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.25);
     text-align:center;
-    opacity:0;
-    transition: all 0.7s ease-out;
+    opacity:0; pointer-events:none;
+    transition: opacity 0.5s ease;
     z-index:15;
 }
 .finalSlide.show {
-    opacity:1;
-    transform:translate(-50%, -50%) scale(1);
+    opacity:1; pointer-events:auto;
 }
 .finalSlide h1 { color:#ff4d6d; font-size:1.5rem; margin-bottom:10px; }
 .finalSlide p { font-size:1rem; line-height:1.4; }
 
-/* ===================== CONFETTI ===================== */
+/* CONFETTIS */
 .confetti {
     position:absolute;
-    width:8px;
-    height:8px;
-    background:red;
+    width:8px; height:8px;
     border-radius:50%;
     animation:fall 3s linear forwards;
 }
 @keyframes fall {
-    0%{transform:translateY(0) rotate(0deg);}
-    100%{transform:translateY(100vh) rotate(360deg); opacity:0;}
-}
-
-/* ===================== COEURS ANIMES ===================== */
-.heart {
-    position:absolute;
-    font-size:20px;
-    animation:float 6s linear infinite;
-}
-@keyframes float {
-    0% { transform: translateY(0); opacity:1; }
-    100% { transform: translateY(-100vh); opacity:0; }
+    to { transform: translateY(100vh) rotate(360deg); opacity:0; }
 }
 </style>
 </head>
@@ -171,7 +136,6 @@ button {
 
 <div class="container">
 
-    <!-- ENVELOPPE -->
     <div class="envelope" id="envelope">
         <div class="envelope-inner">
             <div class="envelope-front">💌</div>
@@ -179,9 +143,8 @@ button {
         </div>
     </div>
 
-    <!-- MOT -->
     <div class="word" id="word">
-        <h1>💖 Lola, veux-tu être ma Valentine ? 💖</h1>
+        <h1>💖 Lola, veux‑tu être ma Valentine ? 💖</h1>
         <p>Promis, je ferai de mon mieux 😇</p>
         <div class="buttons">
             <button id="yes">Oui ❤️</button>
@@ -190,7 +153,6 @@ button {
         <div class="message" id="message"></div>
     </div>
 
-    <!-- SLIDE FINALE -->
     <div class="finalSlide" id="finalSlide">
         <h1>🌹 Merci Lola ! 🌹</h1>
         <p>
@@ -205,7 +167,22 @@ button {
 </div>
 
 <script>
-// ===== VARIABLES =====
+// VARIABLES
+let opened = false;
+let yesClicks = 0;
+const phrases = [
+    "Hmm… t’es sûre ? 😏",
+    "On serait mignons ensemble non ? 💕",
+    "Ce bouton Oui commence à te plaire 😌",
+    "Je le sens bien là 😍",
+    "Bon… encore un petit clic 💘",
+    "Allez, juste un dernier 😇",
+    "Je t’ai dit que j’y croyais 💖",
+    "Encore un petit effort 😏",
+    "C’est presque fini 😍",
+    "Ouiiiiiiii, tu es géniale ❤️"
+];
+
 const envelope = document.getElementById("envelope");
 const word = document.getElementById("word");
 const noBtn = document.getElementById("no");
@@ -213,76 +190,42 @@ const yesBtn = document.getElementById("yes");
 const message = document.getElementById("message");
 const finalSlide = document.getElementById("finalSlide");
 
-let yesClicks = 0;
-let opened=false;
-const phrases = [
-    "Hmm… t’es sûre ? 😏",
-    "On serait mignons ensemble non ? 💕",
-    "Ce bouton Oui commence à te plaire 😌",
-    "Je le sens bien là 😍",
-    "Bon… tu dois vraiment cliquer encore 💘",
-    "Allez, juste un petit dernier 😇",
-    "Je t’ai dit que j’y croyais 💖",
-    "Encore un petit effort 😏",
-    "C’est presque fini, clique 😍",
-    "Ouiiiiiiii, tu es géniale ❤️"
-];
-
-// ===== ANIMATION DES COEURS =====
-setInterval(()=>{
-    const heart = document.createElement("div");
-    heart.className="heart";
-    heart.innerHTML="❤️";
-    heart.style.left=Math.random()*100+"vw";
-    heart.style.top="100vh";
-    heart.style.fontSize=Math.random()*20+10+"px";
-    document.body.appendChild(heart);
-    setTimeout(()=>heart.remove(),6000);
-},400);
-
-// ===== OUVRIR L'ENVELOPPE =====
-document.addEventListener('click', (e) => {
+// OPEN ENVELOPE
+document.body.addEventListener('click', (e) => {
     if(opened) return;
-    if(e.target.closest('button')) return; // ignore les boutons
+    if(e.target.closest('button')) return;
     opened = true;
     envelope.classList.add('open');
     setTimeout(()=> word.classList.add('show'), 1000);
 });
 
-// ===== BOUTON NON =====
-function moveNoButton(){
-    const x = Math.random()*60;
-    const y = Math.random()*80;
-    noBtn.style.position="absolute";
-    noBtn.style.left=x+"%";
-    noBtn.style.top=y+"px";
+// NON BUTTON MOVES
+function moveNoButton() {
+    const x = Math.random()*70;
+    const y = Math.random()*60;
+    noBtn.style.left = x + "%";
+    noBtn.style.top = y + "px";
 }
 noBtn.addEventListener("touchstart", moveNoButton);
 noBtn.addEventListener("mouseover", moveNoButton);
 
-// ===== BOUTON OUI =====
+// YES BUTTON
 yesBtn.addEventListener("click", ()=>{
     yesClicks++;
-    yesBtn.style.transform=`scale(${1 + yesClicks*0.15})`;
-    if(yesClicks <= phrases.length){
-        message.textContent=phrases[yesClicks-1];
-    }
-    if(yesClicks >= phrases.length){
-        // Explosion finale + confettis
-        yesBtn.style.transition="all 0.5s ease-out";
-        yesBtn.style.transform="scale(5)";
-        yesBtn.style.opacity=0;
-        for(let i=0;i<50;i++){
-            const conf = document.createElement("div");
-            conf.className="confetti";
-            conf.style.left=Math.random()*100+"vw";
-            conf.style.background=["#ff4d6d","#ff9a9e","#ffd1dc"][Math.floor(Math.random()*3)];
-            document.body.appendChild(conf);
-            setTimeout(()=>conf.remove(),3000);
+    yesBtn.style.transform = `scale(${1 + yesClicks*0.15})`;
+    if(yesClicks <= phrases.length) message.textContent = phrases[yesClicks-1];
+    if(yesClicks >= phrases.length) {
+        for(let i=0;i<30;i++){
+            const c = document.createElement("div");
+            c.className = "confetti";
+            c.style.background = ["#ff4d6d","#ff9a9e","#ffd1dc"][Math.floor(Math.random()*3)];
+            c.style.left = Math.random()*100 + "vw";
+            document.body.appendChild(c);
+            setTimeout(()=>c.remove(),3000);
         }
         setTimeout(()=>{
-            word.classList.remove("show");
-            finalSlide.classList.add("show");
+            word.classList.remove('show');
+            finalSlide.classList.add('show');
         },600);
     }
 });
