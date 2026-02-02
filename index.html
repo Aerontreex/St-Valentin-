@@ -7,14 +7,18 @@
 
 <style>
 /* BASE */
-html, body {
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    height: 100%;
+body, html {
+    margin: 0; padding: 0;
+    width: 100%; height: 100%;
     font-family: 'Segoe UI', sans-serif;
     background: linear-gradient(135deg, #ff9a9e, #fad0c4);
     overflow: hidden;
+}
+
+.container {
+    position: relative;
+    width: 100%;
+    height: 100%;
 }
 
 /* ENVELOPPE */
@@ -27,8 +31,7 @@ html, body {
     cursor: pointer;
 }
 .envelope-inner {
-    width:100%;
-    height:100%;
+    width:100%; height:100%;
     transform-style: preserve-3d;
     transition: transform 1s ease;
 }
@@ -37,8 +40,7 @@ html, body {
 }
 .envelope-front, .envelope-back {
     position: absolute;
-    width:100%;
-    height:100%;
+    width:100%; height:100%;
     border-radius: 15px;
     backface-visibility: hidden;
     display:flex;
@@ -49,65 +51,52 @@ html, body {
 .envelope-front { background: #ff4d6d; color: white; }
 .envelope-back { background: #ffdee9; transform: rotateX(180deg); }
 
-/* CARTE */
+/* MOT */
 .word {
-    position: fixed;
-    top: 50%;
-    left: 50%;
+    position: absolute;
+    top: 50%; left: 50%;
     transform: translate(-50%, -50%) scale(0);
-    width: 90%;
-    max-width: 350px;
+    width: 90%; max-width: 350px;
     background: white;
-    padding: 20px;
-    border-radius: 15px;
+    padding: 20px; border-radius: 15px;
     box-shadow: 0 15px 35px rgba(0,0,0,0.2);
     text-align: center;
     opacity: 0;
-    transition: transform 0.5s ease, opacity 0.5s ease;
+    pointer-events: none;
     z-index: 10;
+    transition: transform 0.5s ease-out, opacity 0.5s ease-out;
 }
 .word.show {
     transform: translate(-50%, -50%) scale(1);
     opacity: 1;
+    pointer-events: auto;
 }
-
-.word h1 {
-    color: #ff4d6d;
-    font-size: 1.4rem;
-    margin: 0;
-}
-.word p {
-    font-size: 1rem;
-    margin-top: 8px;
-}
+.word h1 { color: #ff4d6d; font-size: 1.4rem; margin:0; }
+.word p { font-size: 1rem; margin:0; }
 
 /* BOUTONS */
 .buttons {
     display: flex;
     justify-content: center;
     gap: 15px;
-    margin-top: 15px;
+    margin-top: 10px;
     position: relative;
 }
-
 button {
     padding: 14px 28px;
     font-size: 1rem;
     border: none;
     border-radius: 30px;
     cursor: pointer;
+    transition: transform 0.3s, opacity 0.4s;
 }
-
 #yes {
     background: #ff4d6d;
     color: white;
-    animation: pulse 1.5s infinite;
 }
-
 #no {
     background: #ddd;
     color:#333;
-    transition: transform 0.3s ease, opacity 0.4s ease;
 }
 
 /* MESSAGE */
@@ -115,86 +104,76 @@ button {
     margin-top: 10px;
     color: #ff4d6d;
     font-weight: bold;
+    font-size: 1rem;
     min-height: 1.5em;
-}
-
-/* PULSE */
-@keyframes pulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.06); }
-    100% { transform: scale(1); }
 }
 
 /* SLIDE FINALE */
 .finalSlide {
-    position: fixed;
-    top: 50%;
-    left:50%;
+    position:absolute;
+    top: 50%; left:50%;
     transform:translate(-50%, -50%);
-    width: 90%;
-    max-width:350px;
+    width: 90%; max-width:350px;
     background: #fff0f5;
     padding: 25px;
     border-radius: 20px;
     box-shadow: 0 15px 35px rgba(0,0,0,0.25);
     text-align:center;
-    opacity:0;
-    pointer-events:none;
+    opacity:0; pointer-events:none;
     transition: opacity 0.5s ease;
     z-index:15;
 }
 .finalSlide.show {
-    opacity:1;
-    pointer-events:auto;
+    opacity:1; pointer-events:auto;
 }
 
 /* CONFETTIS */
 .confetti {
-    position:fixed;
-    width:8px;
-    height:8px;
+    position:absolute;
+    width:8px; height:8px;
     border-radius:50%;
     animation:fall 3s linear forwards;
 }
 @keyframes fall {
-    to {
-        transform: translateY(100vh) rotate(360deg);
-        opacity:0;
-    }
+    to { transform: translateY(100vh) rotate(360deg); opacity:0; }
 }
 </style>
 </head>
 
 <body>
 
-<div class="envelope" id="envelope">
-    <div class="envelope-inner">
-        <div class="envelope-front">💌</div>
-        <div class="envelope-back">💖</div>
-    </div>
-</div>
+<div class="container">
 
-<div class="word" id="word">
-    <h1>💖 Lola, veux-tu être ma Valentine ? 💖</h1>
-    <p>Promis, je ferai de mon mieux 😇</p>
-
-    <div class="buttons">
-        <button id="yes">Oui ❤️</button>
-        <button id="no">Non 💔</button>
+    <div class="envelope" id="envelope">
+        <div class="envelope-inner">
+            <div class="envelope-front">💌</div>
+            <div class="envelope-back">💖</div>
+        </div>
     </div>
 
-    <div class="message" id="message"></div>
-</div>
+    <div class="word" id="word">
+        <h1>💖 Lola, veux-tu être ma Valentine ? 💖</h1>
+        <p>Promis, je ferai de mon mieux 😇</p>
 
-<div class="finalSlide" id="finalSlide">
-    <h1>🌹 SUPER! Merci chou ! 🌹</h1>
-    <p>
-        Tu as rendu quelqu’un heureux en répondant oui.<br>
-        Tu comptes énormément pour moi, merci d’avoir fait le bon choix❤️.<br>
-        Ça a rend ma journée mille fois meilleure…<br>
-        Vivement le 14 pour qu’on se retrouve et passer un magnifique moment ensemble 😘.<br>
-        Je t’aime, gros bisous 💕
-    </p>
+        <div class="buttons">
+            <button id="yes">Oui ❤️</button>
+            <button id="no">Non 💔</button>
+        </div>
+
+        <div class="message" id="message"></div>
+    </div>
+
+    <div class="finalSlide" id="finalSlide">
+        <h1>🌹 SUPER! Merci chou ! 🌹</h1>
+        <p>
+            Tu as rendu quelqu’un heureux en répondant oui.<br>
+            Tu comptes énormément pour moi, merci d’avoir fait le bon choix❤️.<br>
+            Ça a rend ma journée mille fois meilleure…<br>
+            Vivement le 14 pour qu’on se retrouve et passer un magnifique moment ensemble 😘.<br>
+            Je t’aime, gros bisous 💕
+        </p>
+    </div>
+
 </div>
 
 <script>
@@ -203,13 +182,13 @@ let yesClicks = 0;
 let noOpacity = 1;
 
 const phrases = [
-    "Hmm… t’es sûre ?",
+    "Hmm… t’es sûre ? ",
     "On serait mignons ensemble non ? 💕",
     "Ce bouton commence à te plaire 😌",
     "Je le sens bien là 😍",
     "Bon… encore un petit clic 💘",
-    "Allez… juste un dernier 😇",
-    "Ouiiiii ❤️"
+    "Allez, juste un dernier 😇",
+    "Ouiiiiiiii❤️"
 ];
 
 const envelope = document.getElementById("envelope");
@@ -221,39 +200,38 @@ const finalSlide = document.getElementById("finalSlide");
 
 /* OUVERTURE */
 document.body.addEventListener('click', (e) => {
-    if (opened) return;
-    if (e.target.closest('button')) return;
+    if(opened) return;
+    if(e.target.closest('button')) return;
     opened = true;
     envelope.classList.add('open');
-    setTimeout(()=> word.classList.add('show'), 900);
+    setTimeout(()=> word.classList.add('show'), 1000);
 });
 
-/* BOUTON NON : BOUGE + FADE */
-function evadeNo() {
+/* NON : BOUGE + FADE */
+function moveNo() {
     const x = (Math.random() * 80 - 40);
     const y = (Math.random() * 40 - 20);
     noOpacity -= 0.15;
-
     noBtn.style.transform = `translate(${x}px, ${y}px)`;
     noBtn.style.opacity = Math.max(noOpacity, 0);
 }
-noBtn.addEventListener("touchstart", evadeNo);
-noBtn.addEventListener("mouseover", evadeNo);
+noBtn.addEventListener("touchstart", moveNo);
+noBtn.addEventListener("mouseover", moveNo);
 
-/* BOUTON OUI */
-yesBtn.addEventListener("click", () => {
+/* OUI */
+yesBtn.addEventListener("click", ()=>{
     yesClicks++;
 
     if (navigator.vibrate) navigator.vibrate(50);
 
-    yesBtn.style.transform = `scale(${1 + yesClicks * 0.1})`;
+    yesBtn.style.transform = `scale(${1 + yesClicks*0.1})`;
 
-    if (yesClicks <= phrases.length) {
-        message.textContent = phrases[yesClicks - 1];
+    if(yesClicks <= phrases.length) {
+        message.textContent = phrases[yesClicks-1];
     }
 
-    if (yesClicks >= phrases.length) {
-        for (let i = 0; i < 30; i++) {
+    if(yesClicks >= phrases.length) {
+        for(let i=0;i<30;i++){
             const c = document.createElement("div");
             c.className = "confetti";
             c.style.background = ["#ff4d6d","#ff9a9e","#ffd1dc"][Math.floor(Math.random()*3)];
@@ -261,10 +239,10 @@ yesBtn.addEventListener("click", () => {
             document.body.appendChild(c);
             setTimeout(()=>c.remove(),3000);
         }
-        setTimeout(() => {
-            word.style.display = "none";
-            finalSlide.classList.add("show");
-        }, 600);
+        setTimeout(()=>{
+            word.classList.remove('show');
+            finalSlide.classList.add('show');
+        },600);
     }
 });
 </script>
