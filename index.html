@@ -6,8 +6,10 @@
 <title>💌 Pour Lola</title>
 
 <style>
+/* BASE */
 html, body {
     margin: 0;
+    padding: 0;
     width: 100%;
     height: 100%;
     font-family: 'Segoe UI', sans-serif;
@@ -17,55 +19,51 @@ html, body {
 
 /* ENVELOPPE */
 .envelope {
-    width: 260px;
-    height: 180px;
+    width: 80%;
+    max-width: 300px;
+    height: 200px;
     margin: auto;
     margin-top: 30vh;
     cursor: pointer;
 }
 .envelope-inner {
-    width: 100%;
-    height: 100%;
-    transition: transform 1s ease;
+    width:100%;
+    height:100%;
     transform-style: preserve-3d;
+    transition: transform 1s ease;
 }
 .envelope.open .envelope-inner {
     transform: rotateX(180deg);
 }
-.envelope-front,
-.envelope-back {
+.envelope-front, .envelope-back {
     position: absolute;
-    width: 100%;
-    height: 100%;
-    background: #ff4d6d;
-    border-radius: 16px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 3rem;
-    color: white;
+    width:100%;
+    height:100%;
+    border-radius: 15px;
     backface-visibility: hidden;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:2.5rem;
 }
-.envelope-back {
-    transform: rotateX(180deg);
-    background: #ffb3c1;
-}
+.envelope-front { background: #ff4d6d; color: white; }
+.envelope-back { background: #ffdee9; transform: rotateX(180deg); }
 
-/* CARTE */
+/* MOT */
 .word {
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%) scale(0);
     width: 90%;
-    max-width: 360px;
+    max-width: 350px;
     background: white;
     padding: 20px;
-    border-radius: 18px;
-    box-shadow: 0 15px 40px rgba(0,0,0,0.25);
+    border-radius: 15px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
     text-align: center;
     opacity: 0;
-    transition: all 0.5s ease;
+    transition: transform 0.5s ease, opacity 0.5s ease;
     z-index: 10;
 }
 .word.show {
@@ -76,6 +74,7 @@ html, body {
 .word h1 {
     color: #ff4d6d;
     font-size: 1.4rem;
+    margin: 0;
 }
 .word p {
     font-size: 1rem;
@@ -85,16 +84,16 @@ html, body {
 .buttons {
     display: flex;
     justify-content: center;
-    gap: 20px;
-    margin-top: 20px;
+    gap: 15px;
+    margin-top: 15px;
     position: relative;
 }
 
 button {
-    padding: 14px 26px;
+    padding: 14px 28px;
     font-size: 1rem;
-    border-radius: 30px;
     border: none;
+    border-radius: 30px;
     cursor: pointer;
 }
 
@@ -106,7 +105,8 @@ button {
 
 #no {
     background: #ddd;
-    color: #333;
+    color:#333;
+    transition: transform 0.3s ease, opacity 0.4s ease;
 }
 
 /* PULSE */
@@ -116,44 +116,49 @@ button {
     100% { transform: scale(1); }
 }
 
-/* FINAL */
+/* SLIDE FINALE */
 .finalSlide {
     position: fixed;
     top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    left:50%;
+    transform:translate(-50%, -50%);
     width: 90%;
-    max-width: 360px;
+    max-width:350px;
     background: #fff0f5;
     padding: 25px;
     border-radius: 20px;
-    text-align: center;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.6s;
-    z-index: 20;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.25);
+    text-align:center;
+    opacity:0;
+    pointer-events:none;
+    transition: opacity 0.5s ease;
+    z-index:15;
 }
 .finalSlide.show {
-    opacity: 1;
-    pointer-events: auto;
+    opacity:1;
+    pointer-events:auto;
 }
-.signature {
-    margin-top: 15px;
-    font-style: italic;
+.finalSlide h1 {
+    color:#ff4d6d;
+    font-size:1.5rem;
+}
+.finalSlide p {
+    font-size:1rem;
+    line-height:1.4;
 }
 
 /* CONFETTIS */
 .confetti {
-    position: fixed;
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    animation: fall 3s linear forwards;
+    position:fixed;
+    width:8px;
+    height:8px;
+    border-radius:50%;
+    animation:fall 3s linear forwards;
 }
 @keyframes fall {
     to {
         transform: translateY(100vh) rotate(360deg);
-        opacity: 0;
+        opacity:0;
     }
 }
 </style>
@@ -178,66 +183,70 @@ button {
     </div>
 </div>
 
-<div class="finalSlide" id="final">
-    <h1>❤️ Merci d’avoir dit oui</h1>
+<div class="finalSlide" id="finalSlide">
+    <h1>🌹 SUPER! Merci chou ! 🌹</h1>
     <p>
-        Tu as rendu quelqu’un vraiment heureux.<br>
-        Tu comptes énormément pour moi.<br><br>
+        Tu as rendu quelqu’un heureux en répondant oui.<br>
+        Tu comptes énormément pour moi, merci d’avoir fait le bon choix❤️.<br>
+        Ça a rend ma journée mille fois meilleure…<br>
+        Vivement le 14 pour qu’on se retrouve et passer un magnifique moment ensemble 😘.<br>
         Je t’aime, gros bisous 💕
     </p>
-    <div class="signature">— Thomas</div>
 </div>
 
 <script>
 let opened = false;
-let clicks = 0;
+let yesClicks = 0;
+let noOpacity = 1;
 
 const envelope = document.getElementById("envelope");
 const word = document.getElementById("word");
-const yes = document.getElementById("yes");
-const no = document.getElementById("no");
-const final = document.getElementById("final");
+const noBtn = document.getElementById("no");
+const yesBtn = document.getElementById("yes");
+const finalSlide = document.getElementById("finalSlide");
 
-// OUVERTURE
-document.body.addEventListener("click", () => {
+// OUVERTURE ENVELOPPE (clic n'importe où)
+document.body.addEventListener('click', (e) => {
     if (opened) return;
+    if (e.target.closest('button')) return;
     opened = true;
-    envelope.classList.add("open");
-    setTimeout(() => {
-        word.classList.add("show");
-    }, 900);
+    envelope.classList.add('open');
+    setTimeout(() => word.classList.add('show'), 900);
 });
 
-// BOUTON NON (bouge uniquement quand on tente de cliquer)
-function moveNo() {
-    const x = Math.random() * 60 - 30;
-    const y = Math.random() * 40 - 20;
-    no.style.transform = `translate(${x}px, ${y}px)`;
+// BOUTON NON : BOUGE + DISPARAIT
+function evadeNo() {
+    const x = (Math.random() * 80 - 40);
+    const y = (Math.random() * 40 - 20);
+    noOpacity -= 0.15;
+
+    noBtn.style.transform = `translate(${x}px, ${y}px)`;
+    noBtn.style.opacity = Math.max(noOpacity, 0);
 }
-no.addEventListener("touchstart", moveNo);
-no.addEventListener("mouseover", moveNo);
+
+noBtn.addEventListener("touchstart", evadeNo);
+noBtn.addEventListener("mouseover", evadeNo);
 
 // BOUTON OUI
-yes.addEventListener("click", () => {
-    clicks++;
+yesBtn.addEventListener("click", () => {
+    yesClicks++;
 
     if (navigator.vibrate) navigator.vibrate(50);
 
-    yes.style.transform = `scale(${1 + clicks * 0.05})`;
+    yesBtn.style.transform = `scale(${1 + yesClicks * 0.05})`;
 
-    if (clicks === 6) {
+    if (yesClicks === 6) {
         for (let i = 0; i < 30; i++) {
             const c = document.createElement("div");
             c.className = "confetti";
-            c.style.background = ["#ff4d6d", "#ff9a9e", "#ffd1dc"][Math.floor(Math.random() * 3)];
-            c.style.left = Math.random() * 100 + "vw";
+            c.style.background = ["#ff4d6d","#ff9a9e","#ffd1dc"][Math.floor(Math.random()*3)];
+            c.style.left = Math.random()*100 + "vw";
             document.body.appendChild(c);
-            setTimeout(() => c.remove(), 3000);
+            setTimeout(()=>c.remove(),3000);
         }
-
         setTimeout(() => {
             word.style.display = "none";
-            final.classList.add("show");
+            finalSlide.classList.add("show");
         }, 600);
     }
 });
