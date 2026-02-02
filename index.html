@@ -93,6 +93,7 @@ button {
 #yes {
     background: #ff4d6d;
     color: white;
+    animation: pulse 1.5s infinite; /* effet battement continu */
 }
 #no {
     background: #ddd;
@@ -136,6 +137,13 @@ button {
 }
 @keyframes fall {
     to { transform: translateY(100vh) rotate(360deg); opacity:0; }
+}
+
+/* BATTEMENT BOUTON OUI */
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.06); }
+    100% { transform: scale(1); }
 }
 </style>
 </head>
@@ -218,13 +226,15 @@ function moveNo() {
 noBtn.addEventListener("touchstart", moveNo);
 noBtn.addEventListener("mouseover", moveNo);
 
-/* OUI */
+/* OUI : grossit + messages + battement */
 yesBtn.addEventListener("click", ()=>{
     yesClicks++;
 
     if (navigator.vibrate) navigator.vibrate(50);
 
-    yesBtn.style.transform = `scale(${1 + yesClicks*0.21})`;
+    // Combinaison du scale du clic + battement
+    const clickScale = 1 + yesClicks*0.1;
+    yesBtn.style.transform = `scale(${clickScale})`;
 
     if(yesClicks <= phrases.length) {
         message.textContent = phrases[yesClicks-1];
