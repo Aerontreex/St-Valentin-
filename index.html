@@ -54,8 +54,9 @@ body, html {
 /* MOT */
 .word {
     position: absolute;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%) scale(0);
+    top: 50vh; /* centré verticalement sur mobile */
+    left: 50%;
+    transform: translate(-50%, -50%) scale(1);
     width: 90%; max-width: 350px;
     background: white;
     padding: 20px; border-radius: 15px;
@@ -64,15 +65,14 @@ body, html {
     opacity: 0;
     pointer-events: none;
     z-index: 10;
-    transition: transform 0.5s ease-out, opacity 0.5s ease-out;
+    transition: opacity 0.5s ease-out;
 }
 .word.show {
-    transform: translate(-50%, -50%) scale(1);
     opacity: 1;
     pointer-events: auto;
 }
-.word h1 { color: #ff4d6d; font-size: 1.4rem; margin:0; }
-.word p { font-size: 1rem; margin:0; }
+.word h1 { color: #ff4d6d; font-size: 1.3rem; margin:0; }
+.word p { font-size: 0.95rem; margin:5px 0 0 0; }
 
 /* BOUTONS */
 .buttons {
@@ -88,12 +88,12 @@ button {
     border: none;
     border-radius: 30px;
     cursor: pointer;
-    transition: transform 0.3s, opacity 0.4s;
+    transition: transform 0.1s linear, opacity 0.4s;
+    will-change: transform;
 }
 #yes {
     background: #ff4d6d;
     color: white;
-    animation: pulse 1.5s infinite; /* effet battement continu */
 }
 #no {
     background: #ddd;
@@ -105,7 +105,7 @@ button {
     margin-top: 10px;
     color: #ff4d6d;
     font-weight: bold;
-    font-size: 1rem;
+    font-size: 0.95rem;
     min-height: 1.25em;
 }
 
@@ -137,13 +137,6 @@ button {
 }
 @keyframes fall {
     to { transform: translateY(100vh) rotate(360deg); opacity:0; }
-}
-
-/* BATTEMENT BOUTON OUI */
-@keyframes pulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.06); }
-    100% { transform: scale(1); }
 }
 </style>
 </head>
@@ -188,6 +181,9 @@ button {
 let opened = false;
 let yesClicks = 0;
 let noOpacity = 1;
+let lastTime = 0;
+const pulseAmplitude = 0.05; // intensité du battement
+const pulseSpeed = 3; // vitesse battement
 
 const phrases = [
     "Hmm… t’es sûre ? ",
@@ -206,7 +202,7 @@ const yesBtn = document.getElementById("yes");
 const message = document.getElementById("message");
 const finalSlide = document.getElementById("finalSlide");
 
-/* OUVERTURE */
+/* OUVERTURE ENVELOPPE */
 document.body.addEventListener('click', (e) => {
     if(opened) return;
     if(e.target.closest('button')) return;
@@ -215,7 +211,7 @@ document.body.addEventListener('click', (e) => {
     setTimeout(()=> word.classList.add('show'), 1000);
 });
 
-/* NON : BOUGE + FADE */
+/* BOUTON NON : BOUGE + FADE */
 function moveNo() {
     const x = (Math.random() * 80 - 40);
     const y = (Math.random() * 40 - 20);
@@ -226,21 +222,25 @@ function moveNo() {
 noBtn.addEventListener("touchstart", moveNo);
 noBtn.addEventListener("mouseover", moveNo);
 
-/* OUI : grossit + messages + battement */
+/* BOUTON OUI : grossit + battement */
+function animateYes(time) {
+    requestAnimationFrame(animateYes);
+    const baseScale = 1 + yesClicks*0.1;
+    const pulse = 1 + Math.sin(time/1000 * pulseSpeed * Math.PI*2) * pulseAmplitude;
+    yesBtn.style.transform = `scale(${baseScale * pulse})`;
+}
+requestAnimationFrame(animateYes);
+
 yesBtn.addEventListener("click", ()=>{
     yesClicks++;
-
     if (navigator.vibrate) navigator.vibrate(50);
-
-    // Combinaison du scale du clic + battement
-    const clickScale = 1 + yesClicks*0.1;
-    yesBtn.style.transform = `scale(${clickScale})`;
 
     if(yesClicks <= phrases.length) {
         message.textContent = phrases[yesClicks-1];
     }
 
     if(yesClicks >= phrases.length) {
+        // Confettis
         for(let i=0;i<30;i++){
             const c = document.createElement("div");
             c.className = "confetti";
