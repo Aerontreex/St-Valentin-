@@ -27,7 +27,7 @@ body, html {
 /* CONTENEUR POUR SUPERPOSITION */
 .envelopeContainer {
     position: relative;
-    width: 300px; /* taille maximale enveloppe */
+    width: 300px;
     height: 200px;
 }
 
@@ -112,25 +112,38 @@ button {
     text-align:center;
 }
 
-/* SLIDE FINALE */
+/* SLIDE FINALE CORRIGÉE */
 .finalSlide {
     position:absolute;
     top:0; left:0;
-    width:100%; height:100%;
-    background: rgba(255,240,245,0.95);
+    width: 100%;
+    min-height: 100%;  /* prend toute la hauteur pour ne pas déborder */
+    background: rgba(255,240,245,0.95); 
     border-radius:15px;
     display:flex;
     flex-direction:column;
     justify-content:center;
     align-items:center;
+    padding: 30px;       /* plus de marge pour le texte */
+    box-sizing: border-box;
     opacity:0; pointer-events:none;
     transition: opacity 0.5s ease;
 }
 .finalSlide.show {
     opacity:1; pointer-events:auto;
 }
-.finalSlide h1 { color:#ff4d6d; font-size:1.5rem; margin-bottom:10px; text-align:center; }
-.finalSlide p { font-size:1rem; line-height:1.4; text-align:center; }
+.finalSlide h1 { 
+    color:#ff4d6d; 
+    font-size:1.5rem; 
+    margin-bottom:10px; 
+    text-align:center; 
+}
+.finalSlide p { 
+    font-size:1rem; 
+    line-height:1.4; 
+    text-align:center; 
+    word-break: break-word;  /* empêche le débordement du texte */
+}
 
 /* CONFETTIS */
 .confetti {
