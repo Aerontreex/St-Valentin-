@@ -27,7 +27,7 @@ body, html {
     max-width: 300px;
     height: 200px;
     margin: auto;
-    margin-top: 30vh;
+    margin-top: 35vh;
     cursor: pointer;
 }
 .envelope-inner {
@@ -51,23 +51,25 @@ body, html {
 .envelope-front { background: #ff4d6d; color: white; }
 .envelope-back { background: #ffdee9; transform: rotateX(180deg); }
 
-/* MOT */
+/* MOT : positionné au-dessus de l'enveloppe */
 .word {
     position: absolute;
-    top: 50vh; /* centré verticalement sur mobile */
+    bottom: calc(100% + 20px); /* juste au-dessus de l'enveloppe */
     left: 50%;
-    transform: translate(-50%, -50%) scale(1);
+    transform: translateX(-50%) scale(0);
     width: 90%; max-width: 350px;
     background: white;
-    padding: 20px; border-radius: 15px;
+    padding: 20px;
+    border-radius: 15px;
     box-shadow: 0 15px 35px rgba(0,0,0,0.2);
     text-align: center;
     opacity: 0;
     pointer-events: none;
     z-index: 10;
-    transition: opacity 0.5s ease-out;
+    transition: transform 0.5s ease-out, opacity 0.5s ease-out;
 }
 .word.show {
+    transform: translateX(-50%) scale(1);
     opacity: 1;
     pointer-events: auto;
 }
@@ -112,7 +114,8 @@ button {
 /* SLIDE FINALE */
 .finalSlide {
     position:absolute;
-    top: 40%; left:50%;
+    top: 45%; /* décalage vers le haut pour être plus visible */
+    left:50%;
     transform:translate(-50%, -50%);
     width: 90%; max-width:350px;
     background: #fff0f5;
@@ -127,6 +130,8 @@ button {
 .finalSlide.show {
     opacity:1; pointer-events:auto;
 }
+.finalSlide h1 { color:#ff4d6d; font-size:1.5rem; margin-bottom:10px; }
+.finalSlide p { font-size:1rem; line-height:1.4; text-align:center; }
 
 /* CONFETTIS */
 .confetti {
@@ -181,8 +186,7 @@ button {
 let opened = false;
 let yesClicks = 0;
 let noOpacity = 1;
-let lastTime = 0;
-const pulseAmplitude = 0.05; // intensité du battement
+const pulseAmplitude = 0.05; // intensité battement
 const pulseSpeed = 3; // vitesse battement
 
 const phrases = [
