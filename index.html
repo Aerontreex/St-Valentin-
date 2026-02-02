@@ -224,7 +224,7 @@ yesBtn.addEventListener("click", ()=>{
 
     if (navigator.vibrate) navigator.vibrate(50);
 
-    yesBtn.style.transform = `scale(${1 + yesClicks*0.1})`;
+    yesBtn.style.transform = `scale(${1 + yesClicks*0.21})`;
 
     if(yesClicks <= phrases.length) {
         message.textContent = phrases[yesClicks-1];
