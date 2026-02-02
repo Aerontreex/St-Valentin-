@@ -180,7 +180,7 @@ const phrases = [
     "Je t’ai dit que j’y croyais 💖",
     "Encore un petit effort 😏",
     "C’est presque fini 😍",
-    "Ouiiiiiiii, tu es géniale ❤️"
+    "Ouiiiiiiii❤️"
 ];
 
 const envelope = document.getElementById("envelope");
@@ -212,7 +212,7 @@ noBtn.addEventListener("mouseover", moveNoButton);
 // YES BUTTON
 yesBtn.addEventListener("click", ()=>{
     yesClicks++;
-    yesBtn.style.transform = `scale(${1 + yesClicks*0.005})`;
+    yesBtn.style.transform = `scale(${1 + yesClicks*0.1})`;
     if(yesClicks <= phrases.length) message.textContent = phrases[yesClicks-1];
     if(yesClicks >= phrases.length) {
         for(let i=0;i<30;i++){
