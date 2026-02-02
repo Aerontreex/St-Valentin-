@@ -49,7 +49,7 @@ html, body {
 .envelope-front { background: #ff4d6d; color: white; }
 .envelope-back { background: #ffdee9; transform: rotateX(180deg); }
 
-/* MOT */
+/* CARTE */
 .word {
     position: fixed;
     top: 50%;
@@ -78,6 +78,7 @@ html, body {
 }
 .word p {
     font-size: 1rem;
+    margin-top: 8px;
 }
 
 /* BOUTONS */
@@ -109,6 +110,14 @@ button {
     transition: transform 0.3s ease, opacity 0.4s ease;
 }
 
+/* MESSAGE */
+.message {
+    margin-top: 10px;
+    color: #ff4d6d;
+    font-weight: bold;
+    min-height: 1.5em;
+}
+
 /* PULSE */
 @keyframes pulse {
     0% { transform: scale(1); }
@@ -137,14 +146,6 @@ button {
 .finalSlide.show {
     opacity:1;
     pointer-events:auto;
-}
-.finalSlide h1 {
-    color:#ff4d6d;
-    font-size:1.5rem;
-}
-.finalSlide p {
-    font-size:1rem;
-    line-height:1.4;
 }
 
 /* CONFETTIS */
@@ -181,6 +182,8 @@ button {
         <button id="yes">Oui ❤️</button>
         <button id="no">Non 💔</button>
     </div>
+
+    <div class="message" id="message"></div>
 </div>
 
 <div class="finalSlide" id="finalSlide">
@@ -199,22 +202,33 @@ let opened = false;
 let yesClicks = 0;
 let noOpacity = 1;
 
+const phrases = [
+    "Hmm… t’es sûre ?",
+    "On serait mignons ensemble non ? 💕",
+    "Ce bouton commence à te plaire 😌",
+    "Je le sens bien là 😍",
+    "Bon… encore un petit clic 💘",
+    "Allez… juste un dernier 😇",
+    "Ouiiiii ❤️"
+];
+
 const envelope = document.getElementById("envelope");
 const word = document.getElementById("word");
 const noBtn = document.getElementById("no");
 const yesBtn = document.getElementById("yes");
+const message = document.getElementById("message");
 const finalSlide = document.getElementById("finalSlide");
 
-// OUVERTURE ENVELOPPE (clic n'importe où)
+/* OUVERTURE */
 document.body.addEventListener('click', (e) => {
     if (opened) return;
     if (e.target.closest('button')) return;
     opened = true;
     envelope.classList.add('open');
-    setTimeout(() => word.classList.add('show'), 900);
+    setTimeout(()=> word.classList.add('show'), 900);
 });
 
-// BOUTON NON : BOUGE + DISPARAIT
+/* BOUTON NON : BOUGE + FADE */
 function evadeNo() {
     const x = (Math.random() * 80 - 40);
     const y = (Math.random() * 40 - 20);
@@ -223,19 +237,22 @@ function evadeNo() {
     noBtn.style.transform = `translate(${x}px, ${y}px)`;
     noBtn.style.opacity = Math.max(noOpacity, 0);
 }
-
 noBtn.addEventListener("touchstart", evadeNo);
 noBtn.addEventListener("mouseover", evadeNo);
 
-// BOUTON OUI
+/* BOUTON OUI */
 yesBtn.addEventListener("click", () => {
     yesClicks++;
 
     if (navigator.vibrate) navigator.vibrate(50);
 
-    yesBtn.style.transform = `scale(${1 + yesClicks * 0.05})`;
+    yesBtn.style.transform = `scale(${1 + yesClicks * 0.1})`;
 
-    if (yesClicks === 6) {
+    if (yesClicks <= phrases.length) {
+        message.textContent = phrases[yesClicks - 1];
+    }
+
+    if (yesClicks >= phrases.length) {
         for (let i = 0; i < 30; i++) {
             const c = document.createElement("div");
             c.className = "confetti";
